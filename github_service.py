@@ -5,11 +5,11 @@ FLAIS_FILE_URL = "https://github.com/FINTLabs/{repo_name}/kustomize/base/" + FLA
 
 
 class GithubService:
-    def flais_exist(self, repo_name):
+    def get_flais_content(self, repo_name):
         search_url = FLAIS_FILE_URL.format(repo_name=repo_name)
         response = requests.get(search_url)
 
         if response.status_code == 200:
-            return True
+            return response.content
         else:
             return False
