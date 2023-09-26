@@ -1,87 +1,37 @@
-flais_application = {
-  "apiVersion": "fintlabs.no/v1alpha1",
-  "kind": "Application",
-  "metadata": {
-    "name": "flais-test-application",
-    "namespace": "rogfk-no",
-    "labels": {
-      "app.kubernetes.io/name": "flais-test-application",
-      "app.kubernetes.io/instance": "flais-test-application_rogfk_no",
-      "app.kubernetes.io/version": "latest",
-      "app.kubernetes.io/component": "test-application",
-      "app.kubernetes.io/part-of": "flais",
-      "fintlabs.no/team": "flais",
-      "fintlabs.no/org-id": "rogfk.no"
-    }
-  },
-  "spec": {
-    "port": 80,
-    "orgId": "rogfk.no",
-    "image": "docker/getting-started",
-    "imagePullPolicy": "Always",
-    "prometheus": {
-      "enabled": true,
-      "port": "80",
-      "path": "/prometheus"
-    },
-    "env": [
-      {
-        "name": "ENV1",
-        "value": "test"
-      }
-    ],
-    "envFrom": [
-      {
-        "secretRef": {
-          "name": "flais-test-application-secret"
+flais_default = {
+    "apiVersion": "fintlabs.no/v1alpha1",
+    "kind": "Application",
+    "metadata": {
+        "name": "flais-test-application",
+        "namespace": "{org-dash}",
+        "labels": {
+            "app.kubernetes.io/name": "",
+            "app.kubernetes.io/instance": "",
+            "app.kubernetes.io/version": "latest",
+            "app.kubernetes.io/component": "",
+            "app.kubernetes.io/part-of": "",
+            "fintlabs.no/team": "",
+            "fintlabs.no/org-id": "{org-dot}"
         }
-      }
-    ],
-    "onePassword": {
-      "itemPath": "vaults/aks-alpha-vault/items/azurerator"
     },
-    "kafka": {
-      "enabled": true,
-      "acls": [
-        {
-          "topic": "*.test.topic",
-          "permission": "read"
+    "spec": {
+        "port": 8000,
+        "orgId": "{org-dot}",
+        "image": "docker/getting-started",
+        "prometheus": {
+            "enabled": True,
+            "port": "80",
+            "path": "/prometheus"
+        },
+        "resources": {
+            "limits": {
+                "memory": "512Mi",
+                "cpu": "500m"
+            },
+            "requests": {
+                "memory": "256Mi",
+                "cpu": "250m"
+            }
         }
-      ]
-    },
-    "database": {
-      "enabled": true,
-      "database": "fint-kontroll"
-    },
-    "url": {
-      "hostname": "test.flais.io",
-      "basePath": "/alpha/fintlabs-no"
-    },
-    "ingress": {
-      "enabled": true,
-      "basePath": "/alpha/fintlabs-no/api/users",
-      "middlewares": [
-        "fint-kontroll-sso"
-      ]
-    },
-    "resources": {
-      "limits": {
-        "memory": "1024Mi",
-        "cpu": "100m"
-      },
-      "requests": {
-        "memory": "128Mi",
-        "cpu": "100m"
-      }
-    },
-    "restartPolicy": "Always",
-    "replicas": 1,
-    "strategy": {
-      "type": "RollingUpdate",
-      "rollingUpdate": {
-        "maxSurge": 1,
-        "maxUnavailable": 0
-      }
     }
-  }
 }

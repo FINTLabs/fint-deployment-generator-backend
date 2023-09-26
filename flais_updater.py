@@ -1,5 +1,4 @@
-from resources.flais_data import flais_application
-import json
+from resources.flais_data import flais_default
 import re
 
 LABEL_PREFIX_KUBERNETES = "app.kubernetes.io"
@@ -12,7 +11,7 @@ BACKEND_COMPONENT = "backend"
 class FlaisUpdater:
     def translate_request_to_flais(self, flais_request):
         """Translates a request to a Flais object by updating its fields."""
-        flais = flais_application
+        flais = flais_default
 
         self.__update_metadata(flais_request, flais)
         self.__update_spec(flais_request, flais)
