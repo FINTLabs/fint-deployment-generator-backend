@@ -95,10 +95,8 @@ class FlaisUpdater:
 
     def __set_jvm_arguments(self, flais_request, spec):
         if flais_request["component"] != BACKEND_COMPONENT:
-            print("NOTNOTNOT")
             return
 
-        print("UPDATINGG")
         spec.setdefault("env", []).append({
             "name": "JAVA_TOOL_OPTIONS",
             "value": self.__generate_jvm_arguments(flais_request)
