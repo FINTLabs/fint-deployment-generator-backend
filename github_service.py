@@ -1,4 +1,3 @@
-from flask import request
 import requests
 
 FLAIS_FILE_NAME = "flais.yaml"
@@ -6,7 +5,6 @@ FLAIS_FILE_URL = "https://github.com/FINTLabs/{repo_name}/kustomize/base/" + FLA
 
 
 class GithubService:
-
     def flais_exist(self, repo_name):
         search_url = FLAIS_FILE_URL.format(repo_name=repo_name)
         response = requests.get(search_url)
