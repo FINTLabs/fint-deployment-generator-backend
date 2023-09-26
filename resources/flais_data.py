@@ -17,14 +17,9 @@ flais_default = types.MappingProxyType({
         }
     },
     "spec": {
-        "port": 8000,
+        "port": 8080,
         "orgId": "{org-dot}",
         "image": "docker/getting-started",
-        "prometheus": {
-            "enabled": True,
-            "port": "80",
-            "path": "/prometheus"
-        },
         "resources": {
             "limits": {
                 "memory": "512Mi",
