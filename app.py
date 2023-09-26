@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, abort
 from flais_updater import FlaisUpdater
 from github_service import GithubService
+import yaml
 
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ def check_flais():
     flais_content = github_service.get_flais_content(repo_name)
 
     if flais_content is not False:
-        return jsonify(flais_content)
+        return yaml.safe_load(flais_content)
     else:
         abort(404)
 
