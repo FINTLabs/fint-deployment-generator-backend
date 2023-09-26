@@ -1,7 +1,7 @@
-import yaml
+from resources.flais_data import flais_application
+import json
 import re
 
-BASE_YAML_PATH = "resources/flais-base.yaml"
 LABEL_PREFIX_KUBERNETES = "app.kubernetes.io"
 LABEL_PREFIX_FINTLABS = "fintlabs.no"
 MEMORY_UNIT_MEBIBYTE = "Mi"
@@ -12,8 +12,7 @@ BACKEND_COMPONENT = "backend"
 class FlaisUpdater:
     def translate_request_to_flais(self, flais_request):
         """Translates a request to a Flais object by updating its fields."""
-        with open(BASE_YAML_PATH, "r") as file:
-            flais = yaml.safe_load(file)
+        flais = flais_application
 
         self.__update_metadata(flais_request, flais)
         self.__update_spec(flais_request, flais)
