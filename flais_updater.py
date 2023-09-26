@@ -11,7 +11,7 @@ BACKEND_COMPONENT = "backend"
 class FlaisUpdater:
     def translate_request_to_flais(self, flais_request):
         """Translates a request to a Flais object by updating its fields."""
-        flais = flais_default
+        flais = dict(flais_default)
 
         self.__update_metadata(flais_request, flais)
         self.__update_spec(flais_request, flais)

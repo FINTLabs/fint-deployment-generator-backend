@@ -1,4 +1,6 @@
-flais_default = {
+import types
+
+flais_default = types.MappingProxyType({
     "apiVersion": "fintlabs.no/v1alpha1",
     "kind": "Application",
     "metadata": {
@@ -34,4 +36,4 @@ flais_default = {
             }
         }
     }
-}
+})
