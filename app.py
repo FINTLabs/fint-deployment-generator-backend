@@ -17,10 +17,10 @@ def download_flais_application():
 
 @app.route('/github/check-flais', methods=['POST'])
 def check_flais():
-    repo_name = request.get_json()["repo"]
+    repo_name = request.get_json()
     flais_content = github_service.get_flais_content(repo_name)
 
-    if flais_content is not False:
+    if flais_content is not None:
         return yaml.safe_load(flais_content)
     else:
         abort(404)
