@@ -19,7 +19,7 @@ def check_flais():
     repo_name = request.get_json()["repo"]
     flais_content = github_service.get_flais_content(repo_name)
 
-    if flais_content is not None:
+    if flais_content is not False:
         return jsonify(flais_content)
     else:
         abort(404)
