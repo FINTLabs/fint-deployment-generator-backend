@@ -40,6 +40,9 @@ class FlaisUpdater:
 
     def __update_spec(self, flais_request, flais):
         """Updates the spec of the Flais object."""
+        if "spec" not in flais_request:
+            return
+
         for spec_key, spec_value in enumerate(flais_request["spec"]):
             flais["spec"][spec_key] = spec_value
 
@@ -50,13 +53,17 @@ class FlaisUpdater:
 
         flais["spec"].setdefault("env", []).append({
             "name": "JAVA_TOOL_OPTIONS",
-            "value": self.__generate_jvm_arguments(flais_request)
+            "value": self.__generate_jvm_arguments(flais_request, flais)
         })
 
     @staticmethod
-    def __generate_jvm_arguments(flais_request):
+    def __generate_jvm_arguments(flais_request, flais):
         """Generates JVM arguments based on the memory limits."""
-        limit = flais_request["resources"]["limits"]["memory"]
+        limit = flais_request.get("resources", {}).get("limits", {}).get("memory", None)
+        if limit is None:
+            limit = flais["spec"]["resources"]["limits"]["memory"]
+            print(limit)
+
         match = re.match(r"(\d+)(Mi|Gi)", limit)
         if not match:
             raise ValueError("Unsupported memory unit in request_limit")
@@ -64,8 +71,8 @@ class FlaisUpdater:
         value, unit = match.groups()
         total_memory = int(value) / (1024.0 if unit == "Mi" else 1.0)
 
-        if not (1 <= total_memory <= 250):
-            raise ValueError("Memory out of the 1GB-250GB range")
+        if not (total_memory <= 250):
+            raise ValueError("Memory out of the 250GB range")
 
         if total_memory <= 10:
             overhead_percentage = 0.3 - 0.01 * (total_memory - 1)
