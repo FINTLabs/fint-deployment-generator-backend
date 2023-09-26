@@ -21,15 +21,13 @@ class FlaisUpdater:
     def __update_metadata(flais_request, flais):
         metadata = flais["metadata"]
         metadata["name"] = flais_request["name"]
-        metadata["namespace"] = flais_request["orgId"]
 
         labels = metadata["labels"]
         labels[f"{LABEL_PREFIX_KUBERNETES}/name"] = flais_request["name"]
-        labels[f"{LABEL_PREFIX_KUBERNETES}/instance"] = f"{flais_request['name']}_{flais_request['orgId']}"
+        labels[f"{LABEL_PREFIX_KUBERNETES}/instance"] = f"{flais_request['name']}_{{org_dash}}"
         labels[f"{LABEL_PREFIX_KUBERNETES}/component"] = flais_request["component"]
         labels[f"{LABEL_PREFIX_KUBERNETES}/part-of"] = flais_request["partOf"]
         labels[f"{LABEL_PREFIX_FINTLABS}/team"] = flais_request["team"]
-        labels[f"{LABEL_PREFIX_FINTLABS}/org-id"] = flais_request["orgId"]
 
     def __update_spec(self, flais_request, flais):
         spec = flais["spec"]
