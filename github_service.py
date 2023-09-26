@@ -1,7 +1,7 @@
 import requests
 
 FLAIS_FILE_NAME = "flais.yaml"
-FLAIS_FILE_URL = "https://github.com/FINTLabs/{repo_name}/kustomize/base/" + FLAIS_FILE_NAME
+FLAIS_FILE_URL = "https://raw.githubusercontent.com/FINTLabs/{repo_name}/main/kustomize/base/" + FLAIS_FILE_NAME
 
 
 class GithubService:
