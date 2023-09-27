@@ -27,14 +27,14 @@ def check_flais():
 
 @app.route('/github/check-kustomize', methods=['POST'])
 def check_kustomize():
-    repo_name = request.get_json()['repo']
+    repo_name = request.get_json()
 
     kustomize = github_service.get_kustomize(repo_name)
 
-    if kustomize == True
+    if kustomize is True:
         return "true"
     else:
-        abort(404)
+        return abort(404)
 
 if __name__ == '__main__':
     app.run()
