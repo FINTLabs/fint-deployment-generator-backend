@@ -1,6 +1,6 @@
 import re
 
-from resources.flais_data import flais_default
+from resources import flais_default
 
 LABEL_PREFIX_KUBERNETES = "app.kubernetes.io"
 LABEL_PREFIX_FINTLABS = "fintlabs.no"
@@ -9,6 +9,28 @@ MEMORY_UNIT_MEBIBYTE = "Mi"
 MEMORY_UNIT_GIBIBYTE = "Gi"
 
 BACKEND_COMPONENT = "backend"
+
+
+def from_flais_to_json(flais: dict):
+    metadata = flais.get("metadata")
+    labels = metadata.get("labels")
+
+    name = metadata.get("name")
+    component = labels.get("app.kubernetes.io/component")
+    part_of = labels.get("app.kubernetes.io/part-of")
+    team = labels.get("fintlabs.no/team")
+
+
+    del flais["metadata"]
+    del flais["apiVersion"]
+    del flais["kind"]
+
+    flais["component"] = component
+    flais["partOf"] = part_of
+    flais["team"] = team
+    flais["name"] = name
+
+    return flais
 
 
 class FlaisUpdater:
@@ -38,7 +60,8 @@ class FlaisUpdater:
         labels[f"{LABEL_PREFIX_KUBERNETES}/part-of"] = flais_request["partOf"]
         labels[f"{LABEL_PREFIX_FINTLABS}/team"] = flais_request["team"]
 
-    def __update_spec(self, flais_request, flais):
+    @staticmethod
+    def __update_spec(flais_request, flais):
         """Updates the spec of the Flais object."""
         if "spec" not in flais_request:
             return
