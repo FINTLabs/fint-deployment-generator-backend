@@ -14,7 +14,8 @@ class GithubService:
 
     def __get_repo_and_branch_name(self, github_request: dict):
         repo_name = github_request.get("repo", "")
-        return self.github.get_repo(os.path.join(FINTLABS, repo_name)), github_request.get("branch", "main")
+        repo_path = os.path.join(FINTLABS, repo_name)
+        return self.github.get_repo(repo_path), github_request.get("branch", "main")
 
     def __get_repo_content(self, github_request: dict, path: str):
         """Utility method to fetch repo content."""
