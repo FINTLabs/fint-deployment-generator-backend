@@ -20,7 +20,6 @@ def from_flais_to_json(flais: dict):
     part_of = labels.get("app.kubernetes.io/part-of")
     team = labels.get("fintlabs.no/team")
 
-
     del flais["metadata"]
     del flais["apiVersion"]
     del flais["kind"]
