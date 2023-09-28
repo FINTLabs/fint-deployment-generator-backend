@@ -45,7 +45,8 @@ class GithubService:
     def repo_exists(self, github_request: dict) -> bool:
         try:
             repo_name = github_request.get("repo", "")
-            self.github.get_repo(os.path.join(FINTLABS, repo_name))
+            repo_path = os.path.join(FINTLABS, repo_name)
+            self.github.get_repo(repo_path)
             return True
         except UnknownObjectException:
             return False
