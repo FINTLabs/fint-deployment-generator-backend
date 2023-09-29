@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
-from services import GithubService
+from services import GithubService, FlaisConverter
 
 github = Blueprint('github', __name__)
 github_service = GithubService()
+flais_converter = FlaisConverter()
 
 
 @github.route('/github/check-repository', methods=['POST'])
@@ -39,6 +40,6 @@ def check_kustomize():
 def get_kustomize():
     github_request = request.get_json()
     if github_service.repo_exists(github_request) is True:
-        return github_service.get_flais(github_request)
+        return flais_converter.get_flais_from_kustomize(github_request)
     else:
         return jsonify(status="error", message="Repo doesnt exist"), 404

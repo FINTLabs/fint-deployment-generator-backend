@@ -34,6 +34,9 @@ class FlaisConverter:
             ONE_PASSWORD: (self.one_password_item, FLAIS_ONE_PASSWORD)
         }
 
+    def get_flais_from_kustomize(self, github_request: dict):
+        pass
+
     def kustomize_content_to_flais(self, kustomize_content: dict):
         flais = flais_default
         for key, value in kustomize_content.items():
