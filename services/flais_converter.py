@@ -49,7 +49,7 @@ class FlaisConverter:
         for key, value in kustomize_content.items():
             if key in self.key_to_function_mapping:
                 process_func, target_key = self.key_to_function_mapping[key]
-                flais["spec"][target_key] = process_func(value, flais)
+                flais["spec"][target_key] = process_func(value)
 
     def update_flais_from_kustomize_deployment(self, deployment: dict, flais: dict):
         self.__update_metadata_from_deployment(deployment, flais)
@@ -64,20 +64,20 @@ class FlaisConverter:
 
         pass
 
-    def one_password_item(self, one_password: dict, flais: dict):
-        flais["spec"]["onePassword"] = one_password["spec"]
+    def one_password_item(self, one_password):
+        return one_password["spec"]
 
     def ingress(self, kustomize_ingress: dict, flais: dict):
         pass
 
-    def pg_user(self, pg_user: dict, flais: dict):
-        flais["spec"]["database"] = pg_user["spec"]
+    def pg_user(self, pg_user: dict):
+        return pg_user["spec"]
 
-    def kafka(self, kafka: dict, flais: dict):
+    def kafka(self, kafka: dict):
         # KafkaUserAndAcl
         pass
 
-    def config_map(self, config_map: dict, flais: dict):
+    def config_map(self, config_map: dict):
         data = config_map.get("data")
         env = []
 
@@ -86,7 +86,7 @@ class FlaisConverter:
                 key: value
             })
 
-        flais["spec"]["env"] = env
+        return env
 
     def deployment(self, deployment: dict, flais: dict):
         print("CONFIGURING DEPLOYMENT")
