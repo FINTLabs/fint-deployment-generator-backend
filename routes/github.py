@@ -3,7 +3,7 @@ from services import GithubService, FlaisConverter
 
 github = Blueprint('github', __name__)
 github_service = GithubService()
-flais_converter = FlaisConverter()
+flais_converter = FlaisConverter(github_service)
 
 
 @github.route('/github/check-repository', methods=['POST'])
