@@ -1,12 +1,18 @@
 import yaml
 
 from github import ContentFile
+from resources import flais_default
 
-ONE_PASSWORD_ITEM = ""
+ONE_PASSWORD = ""
 INGRESS = ""
 PG_USER = ""
 KAFKA = ""
 DEPLOYMENT = ""
+
+FLAIS_ONE_PASSWORD = "onePassword"
+FLAIS_INGRESS = "ingress"
+FLAIS_PG_USER = "database"
+FLAIS_KAFKA = "kafka"
 
 
 def from_kustomize_to_json(kustomize_encoded_content: list[ContentFile]) -> dict:
@@ -20,27 +26,36 @@ def from_kustomize_to_json(kustomize_encoded_content: list[ContentFile]) -> dict
 
 class FlaisConverter:
     def __init__(self):
-        pass
+        self.key_to_function_mapping = {
+            DEPLOYMENT: (self.deployment, "deployment"),
+            INGRESS: (self.ingress, FLAIS_INGRESS),
+            PG_USER: (self.pg_user, FLAIS_PG_USER),
+            KAFKA: (self.kafka, FLAIS_KAFKA),
+            ONE_PASSWORD: (self.one_password_item, FLAIS_ONE_PASSWORD)
+        }
 
-    def kustomize_content_to_flais(self):
-        pass
+    def kustomize_content_to_flais(self, kustomize_content: dict):
+        flais = flais_default
+        for key, value in kustomize_content.items():
+            if key in self.key_to_function_mapping:
+                process_func, target_key = self.key_to_function_mapping[key]
+                flais["spec"][target_key] = process_func(value, flais)
 
     def one_password_item(self, one_password: dict):
         # OnePasswordItem
         pass
 
-    def ingress(self, ingress: dict):
-        # IngressRoute
+    def ingress(self, kustomize_ingress: dict, flais: dict):
         pass
 
-    def pg_user(self, pg_user: dict):
+    def pg_user(self, pg_user: dict, flais: dict):
         # PGUser
         pass
 
-    def kafka(self, kafka: dict):
+    def kafka(self, kafka: dict, flais: dict):
         # KafkaUserAndAcl
         pass
 
-    def deployment(self, deployment: dict):
-        # deployment
+    def deployment(self, deployment: dict, flais: dict):
+        print("CONFIGURING DEPLOYMENT")
         pass
