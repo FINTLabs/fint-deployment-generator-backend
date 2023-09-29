@@ -1,9 +1,6 @@
 import re
 
-from resources import flais_default
-
-LABEL_PREFIX_KUBERNETES = "app.kubernetes.io"
-LABEL_PREFIX_FINTLABS = "fintlabs.no"
+from resources import flais_default, FINTLABS_NO, KUBERNETES_IO
 
 MEMORY_UNIT_MEBIBYTE = "Mi"
 MEMORY_UNIT_GIBIBYTE = "Gi"
@@ -53,11 +50,11 @@ class FlaisUpdater:
         metadata["name"] = flais_request["name"]
 
         labels = metadata["labels"]
-        labels[f"{LABEL_PREFIX_KUBERNETES}/name"] = flais_request["name"]
-        labels[f"{LABEL_PREFIX_KUBERNETES}/instance"] = f"{flais_request['name']}_{{org_dash}}"
-        labels[f"{LABEL_PREFIX_KUBERNETES}/component"] = flais_request["component"]
-        labels[f"{LABEL_PREFIX_KUBERNETES}/part-of"] = flais_request["partOf"]
-        labels[f"{LABEL_PREFIX_FINTLABS}/team"] = flais_request["team"]
+        labels[f"{KUBERNETES_IO}/name"] = flais_request["name"]
+        labels[f"{KUBERNETES_IO}/instance"] = f"{flais_request['name']}_{{org_dash}}"
+        labels[f"{KUBERNETES_IO}/component"] = flais_request["component"]
+        labels[f"{KUBERNETES_IO}/part-of"] = flais_request["partOf"]
+        labels[f"{FINTLABS_NO}/team"] = flais_request["team"]
 
     @staticmethod
     def __update_spec(flais_request, flais):
