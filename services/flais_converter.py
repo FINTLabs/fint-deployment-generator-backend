@@ -64,20 +64,29 @@ class FlaisConverter:
 
         pass
 
-    def one_password_item(self, one_password: dict):
-        # OnePasswordItem
-        pass
+    def one_password_item(self, one_password: dict, flais: dict):
+        flais["spec"]["onePassword"] = one_password["spec"]
 
     def ingress(self, kustomize_ingress: dict, flais: dict):
         pass
 
     def pg_user(self, pg_user: dict, flais: dict):
-        # PGUser
-        pass
+        flais["spec"]["database"] = pg_user["spec"]
 
     def kafka(self, kafka: dict, flais: dict):
         # KafkaUserAndAcl
         pass
+
+    def config_map(self, config_map: dict, flais: dict):
+        data = config_map.get("data")
+        env = []
+
+        for key, value in data.items():
+            env.append({
+                key: value
+            })
+
+        flais["spec"]["env"] = env
 
     def deployment(self, deployment: dict, flais: dict):
         print("CONFIGURING DEPLOYMENT")
