@@ -1,9 +1,8 @@
 from flask import Blueprint, request, jsonify
-from services import GithubService, FlaisConverter
+from app.services import GithubService
 
 github = Blueprint('github', __name__)
 github_service = GithubService()
-flais_converter = FlaisConverter(github_service)
 
 
 @github.route('/github/check-repository', methods=['POST'])

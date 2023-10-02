@@ -1,5 +1,5 @@
 from flask import Flask
-from routes import deployment, github
+from .routes import deployment, github
 
 app = Flask(__name__)
 

@@ -1,5 +1,5 @@
 from github import Github, UnknownObjectException
-from services.flais_updater import from_flais_to_json
+from app.services.flais_updater import from_flais_to_json
 import os
 import yaml
 

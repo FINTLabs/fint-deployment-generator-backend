@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services import FlaisUpdater
+from app.services import FlaisUpdater
 
 deployment = Blueprint('deployment', __name__)
 flais_updater = FlaisUpdater()
