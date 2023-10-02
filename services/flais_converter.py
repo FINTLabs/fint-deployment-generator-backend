@@ -29,11 +29,11 @@ class FlaisConverter:
 
     def get_flais_from_kustomize(self, github_request: dict):
         list_of_kustomize_encoded_content = self.github_service.get_kustomize_encoded_content(github_request)
-        decoded_content = self.__from_encoded_kustomize_yaml_to_dict(list_of_kustomize_encoded_content)
+        decoded_content = self.__decode_kustomize_enconded_content(list_of_kustomize_encoded_content)
         return self.kustomize_content_to_flais(decoded_content)
 
     @staticmethod
-    def __from_encoded_kustomize_yaml_to_dict(list_of_kustomize_encoded_content: list[ContentFile]) -> dict:
+    def __decode_kustomize_enconded_content(list_of_kustomize_encoded_content: list[ContentFile]) -> dict:
         decoded_kustomize_content = {}
         for enconded_content in list_of_kustomize_encoded_content:
             decoded_content = yaml.safe_load(enconded_content.decoded_content)
@@ -44,7 +44,7 @@ class FlaisConverter:
     def kustomize_content_to_flais(self, kustomize_content: dict) -> dict:
         flais = flais_default
 
-        self.update_flais_from_kustomize_deployment(kustomize_content[DEPLOYMENT], flais)
+        self.update_flais_from_kustomize_deployment(kustomize_content.get(DEPLOYMENT, None), flais)
 
         for key, value in kustomize_content.items():
             if key in self.key_to_function_mapping:
@@ -52,6 +52,9 @@ class FlaisConverter:
                 flais["spec"][target_key] = process_func(value)
 
     def update_flais_from_kustomize_deployment(self, deployment: dict, flais: dict):
+        if deployment is None:
+            return
+
         self.__update_metadata_from_deployment(deployment, flais)
         pass
 
