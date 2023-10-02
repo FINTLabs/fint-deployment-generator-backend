@@ -10,7 +10,7 @@ FLAIS_PATH = os.path.join(KUSTOMIZE_BASE_PATH, "flais.yaml")
 
 class GithubService:
     def __init__(self):
-        self.github = Github(os.environ.get("fint.github.token"))
+        self.github = Github(os.environ.get("personal.token"))
 
     def __get_repo_and_branch_name(self, github_request: dict):
         repo_name = github_request.get("repo", "")
@@ -53,3 +53,22 @@ class GithubService:
 
     def kustomize_exists(self, github_request: dict) -> bool:
         return bool(self.__get_repo_content(github_request, KUSTOMIZE_BASE_PATH))
+
+    def pull_request(self, github_request: dict) -> bool:
+        try:
+            g = Github(test_token)
+            repo = g.get_repo("Sander14121/leetcode")
+            base_branch = repo.get_branch("main")
+            repo.create_git_ref(ref="refs/heads/test", sha=base_branch.commit.sha)
+            contents = repo.get_contents("README.md", ref="test")
+            repo.update_file(contents.path, "lol", "ja", contents.sha, branch="test")
+
+            repo.create_pull(
+                title="molly test",
+                body="en test for molly idk",
+                head="test",
+                base="main"
+            )
+            return True
+        except Exception as e:
+            raise e
