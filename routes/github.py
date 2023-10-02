@@ -39,7 +39,7 @@ def check_kustomize():
 @github.route('/github/get-kustomize', methods=['POST'])
 def get_kustomize():
     github_request = request.get_json()
-    if github_service.repo_exists(github_request):
+    if github_service.kustomize_exists(github_request):
         return flais_converter.get_flais_from_kustomize(github_request)
     else:
-        return jsonify(status="error", message="Repo doesnt exist"), 404
+        return jsonify(status="error", message="Kustomize not found"), 404
