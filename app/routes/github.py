@@ -16,7 +16,7 @@ def check_repository():
 
 
 @github.route('/github/get-flais', methods=['POST'])
-def check_flais():
+def get_flais():
     github_request = request.get_json()
     flais_content = github_service.get_flais(github_request)
 
