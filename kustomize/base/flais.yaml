@@ -1,0 +1,20 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: Application
+metadata:
+  name: fint-deployment-generator-backend
+  namespace: fintlabs-no
+  labels:
+    app.kubernetes.io/name: fint-deployment-generator-backend
+    app.kubernetes.io/instance: fint-deployment-generator-backend_fintlabs_no
+    app.kubernetes.io/version: latest
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: fint-core
+    fintlabs.no/team: core
+    fintlabs.no/org-id: fintlabs.no
+spec:
+  port: 8080
+  orgId: fintlabs.no
+  image: ghcr.io/fintlabs/fint-deployment-generator-backend:latest
+  imagePullPolicy: Always
+  onePassword:
+    itemPath: vaults/aks-beta-vault/items/fint-deployment-generator-backend
