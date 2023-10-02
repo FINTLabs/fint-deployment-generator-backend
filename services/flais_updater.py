@@ -1,6 +1,7 @@
 import re
 
-from resources import flais_default, FINTLABS_NO, KUBERNETES_IO
+from resources import flais_default
+from constants import FINTLABS_NO, KUBERNETES_IO
 
 MEMORY_UNIT_MEBIBYTE = "Mi"
 MEMORY_UNIT_GIBIBYTE = "Gi"
