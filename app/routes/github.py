@@ -33,23 +33,13 @@ def check_kustomize():
         return jsonify(status="success", message="Kustomize exists"), 200
     else:
         return jsonify(status="error", message="Kustomize not found"), 404
-<<<<<<< HEAD:app/routes/github.py
-=======
 
-
-@github.route('/github/get-kustomize', methods=['POST'])
-def get_kustomize():
-    github_request = request.get_json()
-    if github_service.repo_exists(github_request) is True:
-        return flais_converter.get_flais_from_kustomize(github_request)
-    else:
-        return jsonify(status="error", message="Repo doesnt exist"), 404
 
 @github.route('/github/pull-request', methods=['POST'])
 def pull_request():
     github_request = request.get_json()
-    if github_service.pull_request(github_request) is True:
-        return "yeahboi"
+    if github_service.repo_exists(github_request):
+        github_service.create_pull_request(github_request)
     else:
-        return "noooo"
->>>>>>> eb2ce18 ( :poop:):routes/github.py
+        jsonify(status="error", message="Repository not found"), 404
+

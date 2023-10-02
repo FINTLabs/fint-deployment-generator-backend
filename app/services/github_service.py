@@ -1,5 +1,5 @@
 from github import Github, UnknownObjectException
-from app.services.flais_updater import from_flais_to_json
+from app.services.flais_updater import from_flais_to_json, FlaisUpdater
 import os
 import yaml
 
@@ -9,8 +9,9 @@ FLAIS_PATH = os.path.join(KUSTOMIZE_BASE_PATH, "flais.yaml")
 
 
 class GithubService:
-    def __init__(self):
-        self.github = Github(os.environ.get("personal.token"))
+    def __init__(self, flais_updater: FlaisUpdater):
+        self.github = Github(os.environ.get("fint.github.token"))
+        self.flais_updater = flais_updater
 
     def __get_repo_and_branch_name(self, github_request: dict):
         repo_name = github_request.get("repo", "")
@@ -54,21 +55,27 @@ class GithubService:
     def kustomize_exists(self, github_request: dict) -> bool:
         return bool(self.__get_repo_content(github_request, KUSTOMIZE_BASE_PATH))
 
-    def pull_request(self, github_request: dict) -> bool:
+    def create_pull_request(self, github_request: dict):
         try:
-            g = Github(test_token)
-            repo = g.get_repo("Sander14121/leetcode")
-            base_branch = repo.get_branch("main")
-            repo.create_git_ref(ref="refs/heads/test", sha=base_branch.commit.sha)
-            contents = repo.get_contents("README.md", ref="test")
-            repo.update_file(contents.path, "lol", "ja", contents.sha, branch="test")
+            new_branch_name = "Deployment-Generator"
+            repo, branch_name = self.__get_repo_and_branch_name(github_request)
+
+            base_branch = repo.get_branch(branch_name)
+            repo.create_git_ref(ref=f"refs/heads/{new_branch_name}", sha=base_branch.commit.sha)
+            contents = repo.get_contents(FLAIS_PATH, ref=new_branch_name)
+
+            repo.update_file(
+                contents.path,
+                "Updated by flais generator",
+                self.flais_updater.translate_request_to_flais(github_request),
+                contents.sha, branch=new_branch_name
+            )
 
             repo.create_pull(
-                title="molly test",
-                body="en test for molly idk",
-                head="test",
-                base="main"
+                title="Deployment Generated Flais",
+                body="Flais updated by the Deployment generator",
+                head=new_branch_name,
+                base=branch_name
             )
-            return True
-        except Exception as e:
-            raise e
+        except Exception as error:
+            raise error
