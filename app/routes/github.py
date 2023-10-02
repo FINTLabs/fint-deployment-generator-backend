@@ -40,7 +40,6 @@ def check_kustomize():
 def pull_request():
     github_request = request.get_json()
     if github_service.repo_exists(github_request):
-        github_service.create_pull_request(github_request)
+        return jsonify(status="success", content=github_service.create_pull_request(github_request)), 200
     else:
-        jsonify(status="error", message="Repository not found"), 404
-
+        return jsonify(status="error", message="Repository not found"), 404
