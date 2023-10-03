@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
-from app.services import GithubService, FlaisUpdater
+from app.services import GithubService, FlaisUpdater, FlaisConverter
 
 github = Blueprint('github', __name__)
 flais_updater = FlaisUpdater()
 github_service = GithubService(flais_updater)
+flais_converter = FlaisConverter()
 
 
 @github.route('/github/check-repository', methods=['POST'])
@@ -41,5 +42,14 @@ def pull_request():
     github_request = request.get_json()
     if github_service.repo_exists(github_request):
         return jsonify(status="success", content=github_service.create_pull_request(github_request)), 200
+    else:
+        return jsonify(status="error", message="Repository not found"), 404
+
+
+@github.route('/github/convert-flais', methods=['POST'])
+def pull_request():
+    github_request = request.get_json()
+    if github_service.repo_exists(github_request):
+        return jsonify(status="success", content=flais_converter.convert()), 200
     else:
         return jsonify(status="error", message="Repository not found"), 404
