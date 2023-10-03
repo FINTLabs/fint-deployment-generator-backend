@@ -15,6 +15,16 @@ def check_repository():
         return jsonify(status="error", message="Repository not found"), 404
 
 
+@github.route('/github/check-kustomize', methods=['POST'])
+def check_kustomize():
+    github_request = request.get_json()
+
+    if github_service.kustomize_exists(github_request):
+        return jsonify(status="success", message="Kustomize exists"), 200
+    else:
+        return jsonify(status="error", message="Kustomize not found"), 404
+
+
 @github.route('/github/get-flais', methods=['POST'])
 def get_flais():
     github_request = request.get_json()
@@ -24,16 +34,6 @@ def get_flais():
         return jsonify(status="success", content=flais_content), 200
     else:
         return jsonify(status="error", message="Flais file not found"), 404
-
-
-@github.route('/github/check-kustomize', methods=['POST'])
-def check_kustomize():
-    github_request = request.get_json()
-
-    if github_service.kustomize_exists(github_request):
-        return jsonify(status="success", message="Kustomize exists"), 200
-    else:
-        return jsonify(status="error", message="Kustomize not found"), 404
 
 
 @github.route('/github/pull-request', methods=['POST'])
