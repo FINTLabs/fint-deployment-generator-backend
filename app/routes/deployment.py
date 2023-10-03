@@ -7,5 +7,4 @@ flais_updater = FlaisUpdater()
 
 @deployment.route('/deployment', methods=['POST'])
 def download_flais_application():
-    flais = flais_updater.translate_request_to_flais(request.get_json())
-    return jsonify(flais)
+    return jsonify(status="success", content=flais_updater.translate_request_to_flais(request.get_json()))
