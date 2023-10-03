@@ -47,7 +47,7 @@ def pull_request():
 
 
 @github.route('/github/convert-flais', methods=['POST'])
-def pull_request():
+def convert_flais():
     github_request = request.get_json()
     if github_service.repo_exists(github_request):
         return jsonify(status="success", content=flais_converter.convert()), 200
