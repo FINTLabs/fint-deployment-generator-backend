@@ -7,7 +7,7 @@ github_service = GithubService(flais_updater)
 flais_converter = FlaisConverter()
 
 
-@github.route('/github/check-repository', methods=['POST'])
+@github.route('/github/check-repo', methods=['POST'])
 def check_repository():
     github_request = request.get_json()
     if github_service.repo_exists(github_request):
