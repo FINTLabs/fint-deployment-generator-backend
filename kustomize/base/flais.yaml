@@ -18,3 +18,8 @@ spec:
   imagePullPolicy: Always
   onePassword:
     itemPath: vaults/aks-beta-vault/items/fint-deployment-generator-backend
+  url:
+    hostname: deployment.fintlabs.no
+    basePath: /
+  ingress:
+    enabled: true
