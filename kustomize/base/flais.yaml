@@ -20,7 +20,7 @@ spec:
     itemPath: vaults/aks-beta-vault/items/fint-deployment-generator-backend
   url:
     hostname: deployment.fintlabs.no
-    basePath: /
+    basePath: /api
   ingress:
     enabled: true
     middlewares:
